@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Building clean, scalable Roblox systems for gameplay, progression, UI, and live operations."
+    />
+    <title>SirDerpsAlot83 | Roblox Systems Programmer</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="SirDerpsAlot83 home">
+        <span>SirDerpsAlot83</span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="sr-only">Toggle navigation</span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
+        <a href="projects/index.html">Projects</a>
+        <a href="#systems">Systems Demos</a>
+        <a href="#samples">Code Samples</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero section">
+        <div class="hero-media" aria-hidden="true"></div>
+        <div class="hero-content">
+          <p class="eyebrow">Roblox Developer</p>
+          <h1>SirDerpsAlot83</h1>
+          <p class="hero-copy">
+            Building clean, scalable Roblox systems for gameplay, progression, UI, and live ops.
+          </p>
+          <div class="hero-actions" aria-label="Primary links">
+            <a class="button primary" href="projects/index.html">View Projects</a>
+            <a class="button secondary" href="#contact">Contact</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="section content-section">
+        <div class="section-heading">
+          <p class="eyebrow">Projects</p>
+        </div>
+
+        <a
+          class="project-entry project-click-card"
+          href="projects/barbie-dream-search.html"
+          aria-label="Open Barbie Dream Search project page"
+        >
+          <div class="project-image">
+            <img
+              src="assets/images/barbie.webp"
+              alt="Icon for Barbie Dream Search"
+              loading="lazy"
+            />
+          </div>
+          <div class="project-content">
+            <p class="eyebrow">Lead Programmer</p>
+            <h3>Barbie&trade; Dream Search</h3>
+            <p>
+              Rewarded Playables project focused on reusable framework work and a toy scavenger system where players rebuild toys from pieces found around the map.
+            </p>
+            <ul class="tag-list" aria-label="Project focus areas">
+              <li>Gameplay Systems</li>
+              <li>Co-op Systems</li>
+              <li>Framework Reuse</li>
+              <li>Live-Service</li>
+            </ul>
+          </div>
+        </a>
+
+        <a class="all-projects-card project-click-card" href="projects/index.html">
+          <span>See all projects</span>
+          <small>Open the full project catalog</small>
+        </a>
+      </section>
+
+      <section id="systems" class="section content-section">
+        <div class="section-heading">
+          <p class="eyebrow">Systems Demos</p>
+        </div>
+
+        <div class="demo-grid">
+          <article class="demo-card">
+            <h3>Server-Sided Projectile Validation</h3>
+            <p>
+              Secure hit detection for Guns &amp; Glory using server-authoritative projectile collision with position snapshots for responsive combat.
+            </p>
+            <span>Combat Networking</span>
+          </article>
+          <article class="demo-card">
+            <h3>Live Ops and Matchmaking</h3>
+            <p>
+              Battle pass support, game modes, events, collaborations, lobby rework, and MemoryStore-based matchmaking systems.
+            </p>
+            <span>Live-Service</span>
+          </article>
+          <article class="demo-card">
+            <h3>Infinite Racing Track</h3>
+            <p>
+              Infinitely generating race track work for Givenchy Gentleman Society, supporting ongoing runs and high-score attempts.
+            </p>
+            <span>Procedural Gameplay</span>
+          </article>
+          <article class="demo-card">
+            <h3>Analytics and Survey Data</h3>
+            <p>
+              Brand Lift Study and analytics work across branded Roblox projects, including survey storage, CSV conversion, and interaction tracking.
+            </p>
+            <span>Data Systems</span>
+          </article>
+        </div>
+      </section>
+
+      <section id="samples" class="section content-section">
+        <div class="section-heading">
+          <p class="eyebrow">Code Samples</p>
+        </div>
+
+        <div class="sample-grid">
+          <article class="code-panel">
+            <div class="panel-heading">
+              <h3>Incremental Player Data Replication</h3>
+              <span>Data</span>
+            </div>
+            <pre><code>local function BuildChangedData(ToSend, Old, Current)
+	local HasChanges = false
+
+	for Key, Value in Current do
+		local OldValue = Old[Key]
+
+		if typeof(Value) == "table" then
+			if typeof(OldValue) == "table" then
+				local ChildChanges = {}
+
+				if BuildChangedData(ChildChanges, OldValue, Value) == true then
+					ToSend[Key] = ChildChanges
+					HasChanges = true
+				end
+			else
+				ToSend[Key] = table.clone(Value)
+				HasChanges = true
+			end
+		elseif Value ~= OldValue then
+			ToSend[Key] = Value
+			HasChanges = true
+		end
+	end
+
+	for Key in Old do
+		if Current[Key] == nil then
+			ToSend[Key] = "NILL"
+			HasChanges = true
+		end
+	end
+
+	return HasChanges
+end</code></pre>
+          </article>
+
+          <article class="code-panel">
+            <div class="panel-heading">
+              <h3>Smooth Client-Side Character Formation</h3>
+              <span>Visuals</span>
+            </div>
+            <pre><code>local function SmoothDampVector(Current, Target, Velocity, SmoothTime, MaxSpeed, DeltaTime)
+	SmoothTime = math.max(0.001, SmoothTime)
+
+	local Omega = 2 / SmoothTime
+	local Change = Current - Target
+	local OriginalTarget = Target
+	local MaxChange = MaxSpeed * SmoothTime
+
+	if Change.Magnitude > MaxChange then
+		Change = Change.Unit * MaxChange
+	end
+
+	Target = Current - Change
+
+	local X = Omega * DeltaTime
+	local Exp = 1 / (1 + X + (0.48 * X * X) + (0.235 * X * X * X))
+	local Temp = (Velocity + (Omega * Change)) * DeltaTime
+	local NewVelocity = (Velocity - (Omega * Temp)) * Exp
+	local Output = Target + ((Change + Temp) * Exp)
+
+	if (OriginalTarget - Current):Dot(Output - OriginalTarget) > 0 then
+		Output = OriginalTarget
+		NewVelocity = Vector3.new(0, 0, 0)
+	end
+
+	return Output, NewVelocity
+end
+
+local function GetFormationOffset(Index, Count, Forward, Right, Spacing)
+	if Count == 1 then
+		return -Forward * Spacing
+	end
+
+	local Radius = math.max(Spacing, Spacing / (2 * math.sin(math.pi / Count)))
+	local Angle = (math.pi * 0.5) + (((Index - 1) / Count) * math.pi * 2)
+
+	return (Right * math.cos(Angle) * Radius) + (Forward * math.sin(Angle) * Radius)
+end</code></pre>
+          </article>
+        </div>
+      </section>
+
+      <section id="about" class="section content-section split-section">
+        <div>
+          <p class="eyebrow">About</p>
+        </div>
+        <div class="about-image">
+          <img
+            src="assets/images/irlpfp.png"
+            alt="Picture of me"
+            loading="lazy"
+          />
+        </div>
+        <div class="body-copy">
+          <p>
+            Roblox developer with 7+ years of experience specializing in programming and game design. Passionate about building clean, scalable systems for gameplay, progression, UI, and live ops. Experienced in Lua scripting, backend data flows, economy design, and performance optimization. Dedicated to creating engaging player experiences through thoughtful system architecture and iterative development.
+          </p>
+          <p>
+            Worked on Roblox experiences and game systems connected to major consumer brands, including brands owned by Fortune 500 and global companies.
+          </p>
+        </div>
+      </section>
+
+      <section id="contact" class="section content-section contact-section">
+        <div class="section-heading">
+          <p class="eyebrow">Contact</p>
+        </div>
+
+        <div class="contact-links" aria-label="Contact links">
+          <a href="mailto:kpageother@gmail.com">Email</a>
+          <a href="https://www.roblox.com/users/5558304848/profile" rel="noreferrer">Roblox Profile</a>
+          <a href="https://www.linkedin.com/in/keaton-page-a2a620313/" rel="noreferrer">LinkedIn</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; <span id="year">2026</span> SirDerpsAlot83.</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
