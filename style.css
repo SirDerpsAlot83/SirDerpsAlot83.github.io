@@ -643,6 +643,13 @@ code {
   -webkit-text-stroke-width: 0.015em;
 }
 
+.project-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1.4rem;
+}
+
 .project-back-row {
   padding-top: clamp(1.35rem, 2.5vw, 2rem);
   padding-bottom: clamp(0.75rem, 1.5vw, 1.1rem);
